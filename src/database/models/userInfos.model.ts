@@ -8,6 +8,8 @@ export class UserInfosModel extends Model {
   lastName: string;
   profilePictureId: number;
 
+  profilePicture: ImageModel;
+
   static tableName = 'user_infos';
 
   static relationMappings = () => ({
@@ -15,7 +17,7 @@ export class UserInfosModel extends Model {
       relation: Model.HasOneRelation,
       modelClass: UserModel,
       join: {
-        from: 'userInfos.id',
+        from: 'user_infos.id',
         to: 'user.userInfosId',
       },
     },
@@ -23,7 +25,7 @@ export class UserInfosModel extends Model {
       relation: Model.HasOneRelation,
       modelClass: ImageModel,
       join: {
-        from: 'userInfos.profilePictureId',
+        from: 'user_infos.profilePictureId',
         to: 'image.id',
       },
     },

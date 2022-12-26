@@ -14,7 +14,7 @@ export class ImageModel extends Model {
       modelClass: UserInfosModel,
       join: {
         from: 'image.id',
-        to: 'userInfos.profilePictureId',
+        to: 'user_infos.profilePictureId',
       },
     },
     recipes: {
@@ -23,8 +23,8 @@ export class ImageModel extends Model {
       join: {
         from: 'image.id',
         through: {
-          from: 'recipeImage.imageId',
-          to: 'recipeImage.recipeId',
+          from: 'recipe_image.imageId',
+          to: 'recipe_image.recipeId',
         },
         to: 'recipe.id',
       },

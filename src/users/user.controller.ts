@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UsersService) {}
 
@@ -15,5 +15,11 @@ export class UserController {
   @Get(':userId')
   async retrieve(@Param('userId') userId) {
     return await this.userService.getUserDetails(userId);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get()
+  async getAll() {
+    return await this.userService.getAll();
   }
 }

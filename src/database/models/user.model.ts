@@ -12,34 +12,39 @@ export class UserModel extends Model {
   isActive: number;
   dateJoined: Date;
   roleId: number;
+  role: RoleModel;
   userInfosId: number;
+
+  userInfos: UserInfosModel;
 
   static tableName = 'user';
 
-  static relationMappings = () => ({
-    role: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: RoleModel,
-      join: {
-        from: 'user.roleId',
-        to: 'role.id',
+  static get relationMappings() {
+    return {
+      role: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: RoleModel,
+        join: {
+          from: 'user.roleId',
+          to: 'role.id',
+        },
       },
-    },
-    userInfos: {
-      relation: Model.HasOneRelation,
-      modelClass: UserInfosModel,
-      join: {
-        from: 'user.userInfosId',
-        to: 'userInfos.id',
+      userInfos: {
+        relation: Model.HasOneRelation,
+        modelClass: UserInfosModel,
+        join: {
+          from: 'user.userInfosId',
+          to: 'user_infos.id',
+        },
       },
-    },
-    foodInventory: {
-      relation: Model.HasManyRelation,
-      modelClass: FoodInventoryModel,
-      join: {
-        from: 'user.id',
-        to: 'foodInventory.userId',
+      foodInventory: {
+        relation: Model.HasManyRelation,
+        modelClass: FoodInventoryModel,
+        join: {
+          from: 'user.id',
+          to: 'food_inventory.userId',
+        },
       },
-    },
-  });
+    };
+  }
 }

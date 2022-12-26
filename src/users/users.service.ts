@@ -11,6 +11,7 @@ import { ImageService } from '../image/image.service';
 import { UserEntity } from '../entities/user.entity';
 import { RoleEntity } from '../entities/role.entity';
 import { UserInfosEntity } from '../entities/user-infos.entity';
+import { UserListObjectEntity } from '../entities/user-list-object.entity';
 
 @Injectable()
 export class UsersService {
@@ -43,20 +44,31 @@ export class UsersService {
   }
 
   async getUserDetails(userId: number) {
-    const user = await this.findById(userId);
-    const role = await this.roleService.getRoleById(user.roleId);
-    const userInfos = await this.userInfosService.getUserInfosById(
-      user.userInfosId,
+    const user = await this.findById(userId).withGraphFetched(
+      '[role, userInfos, userInfos.profilePicture]',
     );
-    const imageObj = await this.imageService.getImageById(
-      userInfos.profilePictureId,
+    const image = this.imageService.getBase64Image(
+      user.userInfos.profilePicture.location,
     );
-    const image = this.imageService.getBase64Image(imageObj.location);
     return new UserEntity({
       ...user,
       image: image,
-      role: new RoleEntity(role),
-      userInfos: new UserInfosEntity(userInfos),
+      role: new RoleEntity(user.role),
+      userInfos: new UserInfosEntity(user.userInfos),
     });
+  }
+
+  async getAll() {
+    const users = await this.modelClass.query().withGraphJoined('role');
+    if (users) {
+      return users.map(
+        (u) =>
+          new UserListObjectEntity({
+            ...u,
+            role: new RoleEntity(u.role),
+          }),
+      );
+    }
+    return [];
   }
 }
