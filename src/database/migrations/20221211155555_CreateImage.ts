@@ -1,14 +1,12 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 
 const tableName = 'image';
 
 export async function up(knex: Knex) {
-  return knex.schema.createTable(tableName, t => {
+  return knex.schema.createTable(tableName, (t) => {
     t.increments('id').primary();
 
-    t.string('location', 255)
-        .notNullable();
-
+    t.string('location', 255).notNullable();
   });
 }
 

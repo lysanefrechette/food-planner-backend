@@ -1,20 +1,16 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 
 const tableName = 'groceries_list';
 
 export async function up(knex: Knex) {
-  return knex.schema.createTable(tableName, t => {
+  return knex.schema.createTable(tableName, (t) => {
     t.increments('id').primary();
 
-    t.string('name', 255)
-        .notNullable();
+    t.string('name', 255).notNullable();
 
-    t.datetime('created_at')
-        .notNullable();
+    t.datetime('created_at').notNullable();
 
-    t.datetime('updated_at')
-        .nullable();
-
+    t.datetime('updated_at').nullable();
   });
 }
 

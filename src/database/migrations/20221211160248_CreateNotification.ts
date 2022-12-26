@@ -1,17 +1,14 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 
 const tableName = 'notification';
 
 export async function up(knex: Knex) {
-  return knex.schema.createTable(tableName, t => {
+  return knex.schema.createTable(tableName, (t) => {
     t.increments('id').primary();
 
-    t.text('description')
-        .nullable();
+    t.text('description').nullable();
 
-    t.string('title', 45)
-        .notNullable();
-
+    t.string('title', 45).notNullable();
   });
 }
 
