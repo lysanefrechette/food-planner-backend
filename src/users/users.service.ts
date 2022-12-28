@@ -11,7 +11,7 @@ import { UserListObjectEntity } from '../entities/user-list-object.entity';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UserInfosModel } from '../database/models/userInfos.model';
 import * as argon2 from 'argon2';
-import e from 'express';
+import { UpdateUserDto } from '../dto/update-user-dto';
 
 @Injectable()
 export class UsersService {
@@ -87,8 +87,8 @@ export class UsersService {
     try {
       return await UserInfosModel.transaction(async () => {
         const userInfos = await UserInfosModel.query().insert({
-          firstName: dto.first_name,
-          lastName: dto.last_name,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
           profilePictureId: 1,
         });
         const user = await UserModel.query().insert({
@@ -103,11 +103,40 @@ export class UsersService {
         });
         return new UserEntity({
           ...user,
+          role: new RoleEntity(await this.roleService.getRoleById(user.roleId)),
           userInfos: new UserInfosEntity(userInfos),
         });
       });
     } catch (err) {
       this.logger.error('An error occurred while creating the user.');
+      return null;
+    }
+  }
+  async updateUser(dto: UpdateUserDto, userId: number): Promise<UserEntity> {
+    try {
+      return await UserModel.transaction(async () => {
+        const { username, password, roleId, email, isActive } = dto;
+        const dtoUser = { username, password, roleId, email, isActive };
+        const user = await UserModel.query().patchAndFetchById(userId, {
+          ...dtoUser,
+        });
+        const { firstName, lastName } = dto;
+        const userInfosDto = { firstName, lastName };
+        let userInfos = await UserInfosModel.query().patchAndFetchById(
+          user.userInfosId,
+          { ...userInfosDto },
+        );
+        if (!userInfos) {
+          userInfos = await UserInfosModel.query().findById(user.userInfosId);
+        }
+        return new UserEntity({
+          ...user,
+          role: new RoleEntity(await this.roleService.getRoleById(user.roleId)),
+          userInfos: new UserInfosEntity(userInfos),
+        });
+      });
+    } catch (err) {
+      this.logger.error('An error occurred while updating the user');
       return null;
     }
   }

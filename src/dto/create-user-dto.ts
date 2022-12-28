@@ -44,10 +44,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  first_name: string;
+  firstName: string;
 
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  last_name: string;
+  lastName: string;
 }
