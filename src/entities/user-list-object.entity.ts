@@ -1,6 +1,5 @@
 import { UserEntity } from './user.entity';
 import { Exclude, Transform } from 'class-transformer';
-import { UserInfosEntity } from './user-infos.entity';
 import { RoleEntity } from './role.entity';
 
 export class UserListObjectEntity {

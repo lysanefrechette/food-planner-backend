@@ -16,13 +16,15 @@ export class AuthController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() request) {
+  async login(
+    @Request() request,
+  ): Promise<{ refresh: string; access: string }> {
     return this.authService.login(request.user);
   }
 
   @Public()
   @Post('refresh')
-  async refresh(@Request() request) {
+  async refresh(@Request() request): Promise<{ access: string }> {
     const refreshToken = request.body['refresh'];
     const response = await this.authService.refreshToken(refreshToken);
     if (response) {

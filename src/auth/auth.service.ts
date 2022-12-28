@@ -12,8 +12,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string) {
-    const user = await this.usersService.findOne(username);
+  async validateUser(username: string, password: string): Promise<UserModel> {
+    const user = await this.usersService.findByUsername(username);
     if (user) {
       if (await argon2.verify(user.password, password)) {
         return user;
@@ -22,7 +22,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: UserModel) {
+  async login(user: UserModel): Promise<{ refresh: string; access: string }> {
     const access = await this.generateAccess(user);
     const refresh = await this.generateRefresh(user);
     return {
@@ -31,7 +31,7 @@ export class AuthService {
     };
   }
 
-  async generateRefresh(user: UserModel) {
+  async generateRefresh(user: UserModel): Promise<string> {
     const payload = {
       username: user.username,
       sub: user.id,
@@ -43,7 +43,7 @@ export class AuthService {
     });
   }
 
-  async generateAccess(user: UserModel) {
+  async generateAccess(user: UserModel): Promise<string> {
     const payload = {
       username: user.username,
       sub: user.id,
@@ -55,12 +55,12 @@ export class AuthService {
     });
   }
 
-  async refreshToken(refreshToken: string) {
+  async refreshToken(refreshToken: string): Promise<{ access: string }> {
     try {
       const user = this.jwtService.verify(refreshToken, {
         secret: process.env.REFRESH_KEY,
       });
-      const userFromDB = await this.usersService.findOne(user.username);
+      const userFromDB = await this.usersService.findByUsername(user.username);
       if (!user || !userFromDB) {
         return null;
       }
