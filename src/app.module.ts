@@ -15,6 +15,12 @@ import { UserInfosService } from './user-infos/user-infos.service';
 import { ImageModule } from './image/image.module';
 import { RoleModule } from './role/role.module';
 import { UserInfosModule } from './user-infos/user-infos.module';
+import { MeasurementUnitController } from './measurement-unit/measurement-unit.controller';
+import { MeasurementUnitModule } from './measurement-unit/measurement-unit.module';
+import { TimeOfDayModule } from './time-of-day/time-of-day.module';
+import { IngredientModule } from './ingredient/ingredient.module';
+import { MealTypeModule } from './meal-type/meal-type.module';
+import { RecipeAuthorModule } from './recipe-author/recipe-author.module';
 
 @Module({
   imports: [
@@ -26,8 +32,13 @@ import { UserInfosModule } from './user-infos/user-infos.module';
     ImageModule,
     RoleModule,
     UserInfosModule,
+    MeasurementUnitModule,
+    TimeOfDayModule,
+    IngredientModule,
+    MealTypeModule,
+    RecipeAuthorModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, MeasurementUnitController],
   providers: [
     AppService,
     {

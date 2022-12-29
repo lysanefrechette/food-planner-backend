@@ -19,8 +19,10 @@ import { UserListObjectEntity } from '../entities/user-list-object.entity';
 import { UpdateUserDto } from '../dto/update-user-dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { getUniqueFileName } from '../image/constant';
+import { getUniqueFileName } from '../image/constants';
 import { DeleteFileOnErrorFilter } from '../filters/delete-file-on-error-filter';
+import { Roles } from '../auth/decorator/role.decorator';
+import { RolesEnum } from '../auth/enum/roles.enum';
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -32,11 +34,13 @@ export class UserController {
     return await this.userService.getUserDetails(userId);
   }
 
+  @Roles(RolesEnum.Admin)
   @Get()
   async getAll(): Promise<UserListObjectEntity[]> {
     return await this.userService.getAll();
   }
 
+  @Roles(RolesEnum.Admin)
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     return await this.userService.createUser(createUserDto);

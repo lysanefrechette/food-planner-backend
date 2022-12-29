@@ -9,11 +9,11 @@ export class ImageService {
   constructor(
     @Inject('ImageModel') private modelClass: ModelClass<ImageModel>,
   ) {}
-  getBase64Image(url: string) {
+  getBase64Image(url: string): string {
     return fs.readFileSync(url, 'base64');
   }
 
-  getImageById(id: number) {
+  async getImageById(id: number): Promise<ImageModel> {
     const image = this.modelClass.query().findById(id);
     if (image) {
       return image;
