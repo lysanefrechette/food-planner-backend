@@ -7,6 +7,7 @@ import { RoleModule } from '../role/role.module';
 import { IsUsernameAlreadyInUseConstraint } from '../validation/is-username-already-in-use';
 import { IsEmailAlreadyInUseConstraint } from '../validation/is-email-already-in-use';
 import { RoleExist } from '../validation/role-exist';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   providers: [
@@ -15,7 +16,12 @@ import { RoleExist } from '../validation/role-exist';
     IsEmailAlreadyInUseConstraint,
     RoleExist,
   ],
-  imports: [ImageModule, UserInfosModule, RoleModule],
+  imports: [
+    ImageModule,
+    UserInfosModule,
+    RoleModule,
+    MulterModule.register({ dest: './assets/images/profile-pictures' }),
+  ],
   exports: [UsersService],
   controllers: [UserController],
 })
