@@ -4,7 +4,7 @@ import { UserInfosModel } from '../database/models/userInfos.model';
 
 @Injectable()
 export class UserInfosService {
-  private readonly logger: Logger;
+  private readonly logger: Logger = new Logger();
   constructor(
     @Inject('UserInfosModel') private modelClass: ModelClass<UserInfosModel>,
   ) {}

@@ -4,7 +4,7 @@ import { RoleModel } from '../database/models/role.model';
 
 @Injectable()
 export class RoleService {
-  private readonly logger: Logger;
+  private readonly logger: Logger = new Logger();
   constructor(@Inject('RoleModel') private modelClass: ModelClass<RoleModel>) {}
   getRoleById(id: number): Objection.QueryBuilder<RoleModel, RoleModel> {
     const role = this.modelClass.query().findById(id);

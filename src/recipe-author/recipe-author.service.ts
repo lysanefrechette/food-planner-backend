@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ModelClass } from 'objection';
 import { RecipeAuthorModel } from '../database/models/recipeAuthor.model';
+import { CreateRecipeAuthorDto } from '../dto/create-recipe-author-dto';
 
 @Injectable()
 export class RecipeAuthorService {
@@ -11,5 +12,11 @@ export class RecipeAuthorService {
 
   async getAll(): Promise<RecipeAuthorModel[]> {
     return this.modelClass.query();
+  }
+
+  async create(dto: CreateRecipeAuthorDto): Promise<RecipeAuthorModel> {
+    return this.modelClass.query().insert({
+      ...dto,
+    });
   }
 }

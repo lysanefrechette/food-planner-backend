@@ -8,6 +8,7 @@ export class IngredientModel extends Model {
   name: string;
   description: string;
   imageId: number;
+  image: ImageModel;
 
   static tableName = 'ingredient';
 

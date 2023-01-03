@@ -17,7 +17,7 @@ import * as fs from 'fs';
 
 @Injectable()
 export class UsersService {
-  private readonly logger: Logger;
+  private readonly logger: Logger = new Logger();
 
   constructor(
     @Inject('UserModel') private modelClass: ModelClass<UserModel>,
